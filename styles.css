@@ -29,6 +29,7 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  background: var(--black);
 }
 
 body {
@@ -162,6 +163,7 @@ blockquote::before, blockquote::after { content: none; }
   align-items: center;
   justify-content: center;
   transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
 }
 
 .preloader.slide-up {
@@ -247,9 +249,9 @@ blockquote::before, blockquote::after { content: none; }
   top: 0; left: 0; right: 0;
   z-index: 900;
   height: var(--nav-h);
-  background: rgba(17, 17, 17, 0.95);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  background: rgba(17, 17, 17, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.055);
   transition: box-shadow var(--transition);
 }
@@ -374,6 +376,8 @@ blockquote::before, blockquote::after { content: none; }
   display: flex;
   align-items: center;
   overflow: hidden;
+  background: var(--black);
+  isolation: isolate;
 }
 
 /* Background image with Ken Burns zoom */
@@ -388,6 +392,7 @@ blockquote::before, blockquote::after { content: none; }
   inset: -5%;
   background-size: cover;
   background-position: center;
+  background-color: var(--black);
   animation: kenBurns 20s ease-in-out infinite alternate;
   will-change: transform;
 }
@@ -410,6 +415,7 @@ blockquote::before, blockquote::after { content: none; }
       rgba(0,0,0,0.30) 75%,
       rgba(0,0,0,0.15) 100%
     ),
+    linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 18%),
     linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 40%);
 }
 
@@ -2234,6 +2240,7 @@ body.cursor-text .cursor-dot {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 220px 220px;
   animation: grainShift 0.6s steps(1) infinite;
+  will-change: transform;
 }
 @keyframes grainShift {
   0%  { transform: translate(0,0); }
