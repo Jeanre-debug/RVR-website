@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rvrbuildingprojects.co.za/sitemap.xml

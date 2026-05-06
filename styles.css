@@ -2095,6 +2095,11 @@ blockquote::before, blockquote::after { content: none; }
   .testimonials__track { gap: 16px; }
   .testimonial-card { flex: 0 0 100%; padding: 28px 24px; }
 
+  /* Lightbox */
+  .lightbox__inner { width: calc(100% - 88px); }
+  .lightbox__arrow--prev { left: 8px; }
+  .lightbox__arrow--next { right: 8px; }
+
   /* Contact */
   .contact { padding: 76px 0; }
   .contact__form-wrap { padding: 28px 20px; }

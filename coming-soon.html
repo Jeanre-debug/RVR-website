@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RVR Building Projects — Coming Soon</title>
+  <style>
+    html { background: #111111; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;500&display=swap');
+
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      background: #111111;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Background image */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background-image: url('images/project-modern-exterior.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+      animation: slowZoom 25s ease-in-out infinite alternate;
+    }
+    @keyframes slowZoom {
+      from { transform: scale(1.0); }
+      to   { transform: scale(1.08); }
+    }
+
+    /* Dark overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.8) 100%);
+    }
+
+    /* Red left edge */
+    .red-line {
+      position: fixed;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: #CC0000;
+      z-index: 10;
+    }
+
+    /* Main content */
+    .content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 32px;
+      max-width: 680px;
+      width: 100%;
+      animation: fadeUp 1s ease 0.3s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      letter-spacing: 0.06em;
+      line-height: 1;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .logo-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(0.55rem, 2vw, 0.72rem);
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #CC0000;
+      margin-bottom: 48px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: #CC0000;
+      margin: 0 auto 40px;
+    }
+
+    .headline {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      font-style: italic;
+      margin-bottom: 52px;
+      line-height: 1.6;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 32px;
+      margin-bottom: 48px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-item:hover { color: #CC0000; }
+
+    .contact-item svg {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      color: #CC0000;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #CC0000;
+      border: 1px solid rgba(204,0,0,0.4);
+      padding: 7px 14px;
+      border-radius: 2px;
+      background: rgba(204,0,0,0.06);
+    }
+
+    /* Footer */
+    .footer {
+      position: fixed;
+      bottom: 24px;
+      left: 0; right: 0;
+      text-align: center;
+      z-index: 5;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.05em;
+    }
+    .footer a {
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer a:hover { color: #CC0000; }
+
+    @media (max-width: 480px) {
+      .contact-row { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+  <div class="overlay"></div>
+  <div class="red-line"></div>
+
+  <div class="content">
+    <div class="logo">RVR</div>
+    <div class="logo-sub">Building Projects PTY (LTD)</div>
+
+    <div class="divider"></div>
+
+    <h1 class="headline">Our New Website<br>Is On Its Way.</h1>
+    <p class="tagline">It starts with a good foundation.</p>
+
+    <div class="contact-row">
+      <a href="tel:0845548237" class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .9h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.74a16 16 0 006.29 6.29l1.17-1.17a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        084 554 8237
+      </a>
+      <a href="mailto:rayo@rvrbuildingprojects.co.za" class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        rayo@rvrbuildingprojects.co.za
+      </a>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Quayside Office Park, Knysna
+      </div>
+    </div>
+
+    <div class="badges">
+      <span class="badge">NHBRC Registered</span>
+      <span class="badge">MBA Member</span>
+      <span class="badge">15+ Years Experience</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    Built &amp; hosted by <a href="https://www.vertomedia.co.za/" target="_blank" rel="noopener">Verto Media</a>
+  </div>
+
+</body>
+</html>
