@@ -31,13 +31,13 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
       // Small delay for the bar track to fade in (CSS 0.75s delay)
       fillStart = setTimeout(() => {
         progressBar.style.width = '100%';
-      }, 500);
+      }, 300);
     });
   });
 
-  // Total preloader time: ~1.3 seconds
-  // Bar fills 0.65s → slide-up starts at ~1.2s
-  const slideUpDelay = 1200;
+  // Total preloader time: ~1.0 seconds
+  // Bar fills 0.5s → slide-up starts at ~0.9s
+  const slideUpDelay = 900;
 
   setTimeout(() => {
     preloader.classList.add('slide-up');
