@@ -588,6 +588,8 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   if (!form) return;
 
+  const submitOriginalHTML = submitBtn.innerHTML;
+
   // Real-time validation feedback
   form.querySelectorAll('input, select, textarea').forEach(field => {
     field.addEventListener('input', () => {
@@ -631,28 +633,35 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
     if (!valid) return;
 
-    // Show loading state
-    submitBtn.textContent = 'Sending…';
-    submitBtn.disabled    = true;
+    // Loading state
+    submitBtn.textContent   = 'Sending…';
+    submitBtn.disabled      = true;
     submitBtn.style.opacity = '0.7';
 
-    // Simulate submission — replace with Formspree, Netlify Forms, or your API
-    // Example Formspree: fetch('https://formspree.io/f/YOUR_ID', { method: 'POST', body: new FormData(form) })
-    setTimeout(() => {
-      submitBtn.style.display = 'none';
-      successMsg.removeAttribute('hidden');
-      form.reset();
+    // Submit to Netlify Forms
+    fetch('/', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body:    new URLSearchParams(new FormData(form)).toString(),
+    })
+      .then(() => {
+        submitBtn.style.display = 'none';
+        successMsg.removeAttribute('hidden');
+        form.reset();
 
-      // Re-show form after delay (optional — remove if you prefer permanent success)
-      setTimeout(() => {
-        submitBtn.style.display = '';
-        submitBtn.textContent = 'Send Enquiry';
-        submitBtn.disabled = false;
+        setTimeout(() => {
+          submitBtn.style.display = '';
+          submitBtn.innerHTML     = submitOriginalHTML;
+          submitBtn.disabled      = false;
+          submitBtn.style.opacity = '';
+          successMsg.setAttribute('hidden', '');
+        }, 8000);
+      })
+      .catch(() => {
+        submitBtn.innerHTML     = submitOriginalHTML;
+        submitBtn.disabled      = false;
         submitBtn.style.opacity = '';
-        successMsg.setAttribute('hidden', '');
-      }, 8000);
-
-    }, 1400);
+      });
   });
 })();
 
