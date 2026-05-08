@@ -162,7 +162,7 @@ blockquote::before, blockquote::after { content: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  transition: transform 0.2s cubic-bezier(0.76, 0, 0.24, 1);
   will-change: transform;
 }
 
@@ -187,7 +187,7 @@ blockquote::before, blockquote::after { content: none; }
   line-height: 1;
   opacity: 0;
   transform: translateY(40px);
-  animation: preloaderRvrIn 0.55s var(--ease-out) 0.1s forwards;
+  animation: preloaderRvrIn 0.2s var(--ease-out) 0s forwards;
 }
 
 .preloader__logo-sub {
@@ -198,7 +198,7 @@ blockquote::before, blockquote::after { content: none; }
   text-transform: uppercase;
   color: var(--red);
   opacity: 0;
-  animation: preloaderSubIn 0.45s var(--ease-out) 0.55s forwards;
+  animation: preloaderSubIn 0.12s var(--ease-out) 0.18s forwards;
 }
 
 .preloader__bar-track {
@@ -209,7 +209,7 @@ blockquote::before, blockquote::after { content: none; }
   margin-top: 32px;
   overflow: hidden;
   opacity: 0;
-  animation: preloaderSubIn 0.3s var(--ease-out) 0.75s forwards;
+  animation: preloaderSubIn 0.1s var(--ease-out) 0.08s forwards;
 }
 
 .preloader__bar-fill {
@@ -217,7 +217,7 @@ blockquote::before, blockquote::after { content: none; }
   width: 0%;
   background: var(--red);
   border-radius: 2px;
-  transition: width 0.5s var(--ease-out);
+  transition: width 0.25s var(--ease-out);
 }
 
 @keyframes preloaderRvrIn {

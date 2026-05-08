@@ -31,13 +31,13 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
       // Small delay for the bar track to fade in (CSS 0.75s delay)
       fillStart = setTimeout(() => {
         progressBar.style.width = '100%';
-      }, 300);
+      }, 100);
     });
   });
 
-  // Total preloader time: ~1.0 seconds
-  // Bar fills 0.5s → slide-up starts at ~0.9s
-  const slideUpDelay = 900;
+  // Total preloader time: ~0.6 seconds
+  // Bar fills 0.25s → slide-up starts at ~0.4s
+  const slideUpDelay = 400;
 
   setTimeout(() => {
     preloader.classList.add('slide-up');
@@ -60,7 +60,7 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     setTimeout(() => {
       document.body.style.overflow = '';
       if (hero) hero.classList.add('hero--loaded');
-    }, 800);
+    }, 350);
 
   }, slideUpDelay);
 
