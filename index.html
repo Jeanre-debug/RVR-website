@@ -349,6 +349,7 @@
              data-category="renovation"
              data-index="4"
              data-image="images/project-st-james-hotel.jpg"
+             data-images="images/project-st-james-hotel.jpg,images/project-st-james-waterfront.jpg,images/project-st-james-lounge.jpg,images/project-st-james-bar.jpg,images/project-st-james-restaurant.jpg,images/project-st-james-bathroom.jpg"
              data-tag="Renovation"
              data-title="St James Hotel Restoration"
              data-desc="Full-scale hotel restoration and interior refurbishment — reviving colonial-era character with contemporary finishes throughout."
@@ -367,6 +368,7 @@
              data-category="renovation"
              data-index="5"
              data-image="images/project-huis-potgieter.jpg"
+             data-images="images/project-huis-potgieter.jpg,images/project-huis-potgieter-garden.jpg,images/project-huis-potgieter-deck.jpg,images/project-huis-potgieter-kitchen.jpg,images/project-huis-potgieter-living.jpg"
              data-tag="Renovation"
              data-title="Huis Potgieter"
              data-desc="Complete renovation of a modern coastal residence — new kitchen, bathrooms, custom joinery, and seamless indoor-outdoor living spaces."
@@ -402,7 +404,10 @@
         <img class="lightbox__img" id="lightboxImg" src="" alt="" />
       </div>
       <div class="lightbox__info">
-        <span class="lightbox__tag" id="lightboxTag"></span>
+        <div class="lightbox__info-top">
+          <span class="lightbox__tag" id="lightboxTag"></span>
+          <span class="lightbox__counter" id="lightboxCounter" aria-live="polite"></span>
+        </div>
         <h3 class="lightbox__title" id="lightboxTitle"></h3>
         <p class="lightbox__desc" id="lightboxDesc"></p>
       </div>

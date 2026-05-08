@@ -213,12 +213,9 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
       let delay = 0;
 
       portfolioItems.forEach(item => {
-        const category = item.dataset.category;
-        const show     = filter === 'all' || category === filter;
-
+        const show = filter === 'all' || item.dataset.category === filter;
         if (show) {
           item.classList.remove('hidden');
-          item.style.animationDelay = `${delay}ms`;
           item.style.animation = 'none';
           requestAnimationFrame(() => {
             item.style.animation = `portfolioFadeIn 0.4s var(--ease-out) ${delay}ms both`;
@@ -232,39 +229,69 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   });
 
   /* ── Lightbox ─────────────────────────────────────────────────────────── */
-  const lightbox        = qs('#lightbox');
-  const lightboxImg     = qs('#lightboxImg');
-  const lightboxTag     = qs('#lightboxTag');
-  const lightboxTitle   = qs('#lightboxTitle');
-  const lightboxDesc    = qs('#lightboxDesc');
-  const lightboxClose   = qs('#lightboxClose');
-  const lightboxPrev    = qs('#lightboxPrev');
-  const lightboxNext    = qs('#lightboxNext');
+  const lightbox         = qs('#lightbox');
+  const lightboxImg      = qs('#lightboxImg');
+  const lightboxTag      = qs('#lightboxTag');
+  const lightboxCounter  = qs('#lightboxCounter');
+  const lightboxTitle    = qs('#lightboxTitle');
+  const lightboxDesc     = qs('#lightboxDesc');
+  const lightboxClose    = qs('#lightboxClose');
+  const lightboxPrev     = qs('#lightboxPrev');
+  const lightboxNext     = qs('#lightboxNext');
   const lightboxBackdrop = qs('#lightboxBackdrop');
 
   if (!lightbox) return;
 
-  // Build ordered list of lightbox-able items
-  const lbItems = portfolioItems.map(item => ({
-    image: item.dataset.image,
-    tag:   item.dataset.tag,
-    title: item.dataset.title,
-    desc:  item.dataset.desc.replace(/&amp;/g, '&'),
-  }));
-
+  // Gallery state for the currently open project
+  let gallery = [];
+  let galleryMeta = {};
   let currentIndex = 0;
 
-  function openLightbox(index) {
-    currentIndex = ((index % lbItems.length) + lbItems.length) % lbItems.length;
-    loadLightboxItem(currentIndex);
+  function buildGallery(item) {
+    const raw = item.dataset.images;
+    gallery = raw ? raw.split(',').map(s => s.trim()) : [item.dataset.image];
+    galleryMeta = {
+      tag:   item.dataset.tag   || '',
+      title: item.dataset.title || '',
+      desc:  (item.dataset.desc || '').replace(/&amp;/g, '&'),
+    };
+  }
+
+  function updateUI() {
+    const multi = gallery.length > 1;
+    lightboxPrev.style.display    = multi ? '' : 'none';
+    lightboxNext.style.display    = multi ? '' : 'none';
+    lightboxCounter.textContent   = multi ? `${currentIndex + 1} / ${gallery.length}` : '';
+    lightboxTag.textContent       = galleryMeta.tag;
+    lightboxTitle.textContent     = galleryMeta.title;
+    lightboxDesc.textContent      = galleryMeta.desc;
+  }
+
+  function loadImage(index) {
+    const src = gallery[index];
+    if (!src) return;
+    lightboxImg.classList.add('loading');
+    updateUI();
+    const img = new Image();
+    img.onload = () => {
+      lightboxImg.src = src;
+      lightboxImg.alt = galleryMeta.title;
+      requestAnimationFrame(() => lightboxImg.classList.remove('loading'));
+    };
+    img.onerror = () => {
+      lightboxImg.src = src;
+      lightboxImg.classList.remove('loading');
+    };
+    img.src = src;
+  }
+
+  function openLightbox(item) {
+    buildGallery(item);
+    currentIndex = 0;
+    loadImage(0);
     lightbox.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        lightbox.classList.add('active');
-      });
-    });
+    requestAnimationFrame(() => requestAnimationFrame(() => lightbox.classList.add('active')));
   }
 
   function closeLightbox() {
@@ -273,7 +300,6 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
       lightbox.setAttribute('hidden', '');
       document.body.style.overflow = '';
     }, { once: true });
-    // Fallback
     setTimeout(() => {
       if (lightbox.classList.contains('active')) return;
       lightbox.setAttribute('hidden', '');
@@ -281,76 +307,44 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     }, 400);
   }
 
-  function loadLightboxItem(index) {
-    const item = lbItems[index];
-    if (!item) return;
-
-    lightboxImg.classList.add('loading');
-    lightboxTag.textContent   = item.tag;
-    lightboxTitle.textContent = item.title;
-    lightboxDesc.textContent  = item.desc;
-
-    const img = new Image();
-    img.onload = () => {
-      lightboxImg.src = item.image;
-      lightboxImg.alt = item.title;
-      requestAnimationFrame(() => {
-        lightboxImg.classList.remove('loading');
-      });
-    };
-    img.onerror = () => {
-      lightboxImg.src = item.image;
-      lightboxImg.classList.remove('loading');
-    };
-    img.src = item.image;
+  function prev() {
+    currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
+    loadImage(currentIndex);
   }
 
-  function prevItem() {
-    currentIndex = (currentIndex - 1 + lbItems.length) % lbItems.length;
-    loadLightboxItem(currentIndex);
+  function next() {
+    currentIndex = (currentIndex + 1) % gallery.length;
+    loadImage(currentIndex);
   }
 
-  function nextItem() {
-    currentIndex = (currentIndex + 1) % lbItems.length;
-    loadLightboxItem(currentIndex);
-  }
-
-  // Open on portfolio item click or Enter
+  // Open on click or Enter/Space
   portfolioItems.forEach(item => {
-    const trigger = () => {
-      const index = parseInt(item.dataset.index, 10);
-      openLightbox(index);
-    };
+    const trigger = () => openLightbox(item);
     item.addEventListener('click', trigger);
     item.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); }
     });
   });
 
-  // Close handlers
   lightboxClose.addEventListener('click', closeLightbox);
   lightboxBackdrop.addEventListener('click', closeLightbox);
-  lightboxPrev.addEventListener('click', prevItem);
-  lightboxNext.addEventListener('click', nextItem);
+  lightboxPrev.addEventListener('click', prev);
+  lightboxNext.addEventListener('click', next);
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('active')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowLeft')   prevItem();
-    if (e.key === 'ArrowRight')  nextItem();
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  prev();
+    if (e.key === 'ArrowRight') next();
   });
 
-  // Touch swipe support for lightbox
   let touchStartX = 0;
   lightbox.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].clientX;
   }, { passive: true });
   lightbox.addEventListener('touchend', (e) => {
     const delta = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(delta) > 50) {
-      delta < 0 ? nextItem() : prevItem();
-    }
+    if (Math.abs(delta) > 50) delta < 0 ? next() : prev();
   }, { passive: true });
 })();
 

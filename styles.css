@@ -1128,6 +1128,13 @@ blockquote::before, blockquote::after { content: none; }
   border-top: 1px solid rgba(255,255,255,0.08);
 }
 
+.lightbox__info-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
 .lightbox__tag {
   display: inline-block;
   font-family: 'Montserrat', sans-serif;
@@ -1139,7 +1146,14 @@ blockquote::before, blockquote::after { content: none; }
   background: var(--red);
   padding: 4px 10px;
   border-radius: 2px;
-  margin-bottom: 8px;
+}
+
+.lightbox__counter {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.28);
 }
 
 .lightbox__title {
