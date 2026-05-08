@@ -162,7 +162,7 @@ blockquote::before, blockquote::after { content: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
   will-change: transform;
 }
 
@@ -217,7 +217,7 @@ blockquote::before, blockquote::after { content: none; }
   width: 0%;
   background: var(--red);
   border-radius: 2px;
-  transition: width 0.9s var(--ease-out);
+  transition: width 0.65s var(--ease-out);
 }
 
 @keyframes preloaderRvrIn {
