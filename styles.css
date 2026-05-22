@@ -2111,6 +2111,7 @@ blockquote::before, blockquote::after { content: none; }
   .portfolio-item--tall { grid-column: auto; grid-row: auto; }
   .portfolio-item__overlay { opacity: 1; }
   .portfolio-item__overlay > * { transform: none; opacity: 1; }
+  .portfolio-item__img { filter: grayscale(0%) brightness(1); }
 
   /* Why */
   .why__grid { grid-template-columns: 1fr; gap: 0; }
