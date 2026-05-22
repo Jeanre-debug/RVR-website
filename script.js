@@ -21,6 +21,15 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   if (!preloader) return;
 
+  // Only show on first load of the session
+  if (sessionStorage.getItem('rvr_loaded')) {
+    preloader.style.display = 'none';
+    document.body.style.overflow = '';
+    if (hero) hero.classList.add('hero--loaded');
+    return;
+  }
+  sessionStorage.setItem('rvr_loaded', '1');
+
   // Prevent scroll during preload
   document.body.style.overflow = 'hidden';
 
