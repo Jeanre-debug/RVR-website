@@ -107,8 +107,16 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   if (!nav) return;
 
   /* ── Scroll shadow ────────────────────────────────────────────────────── */
+  let navIsScrolled = false;
   function onNavScroll() {
-    nav.classList.toggle('scrolled', window.scrollY > 50);
+    const y = window.scrollY;
+    if (!navIsScrolled && y > 60) {
+      nav.classList.add('scrolled');
+      navIsScrolled = true;
+    } else if (navIsScrolled && y < 30) {
+      nav.classList.remove('scrolled');
+      navIsScrolled = false;
+    }
   }
   window.addEventListener('scroll', onNavScroll, { passive: true });
   onNavScroll();
