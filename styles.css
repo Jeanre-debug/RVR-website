@@ -2542,11 +2542,133 @@ body.cursor-text .cursor-dot {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   UI POLISH — hero accents, button sweep, WhatsApp, map embed
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Anchor offset fallback (works even without JS smooth-scroll) */
+section[id] { scroll-margin-top: calc(var(--nav-h) + 8px); }
+
+/* Red accent periods in the hero heading */
+.hero__heading .dot-accent { color: var(--red); }
+
+/* Shine sweep across red buttons on hover */
+.btn--red::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: skewX(-20deg) translateX(0);
+  transition: transform 0.65s var(--ease-out);
+  pointer-events: none;
+}
+.btn--red:hover::after,
+.btn--red:focus-visible::after { transform: skewX(-20deg) translateX(420%); }
+
+/* Service card icon lift on hover */
+.service-card__icon { transition: transform 0.45s var(--ease-spring); }
+.service-card:hover .service-card__icon { transform: translateY(-4px) scale(1.08); }
+
+/* Select placeholder colour until a choice is made */
+.form-group select:invalid { color: rgba(255,255,255,0.40); }
+
+/* ─── WhatsApp floating button ────────────────────────────────────────────── */
+.whatsapp-float {
+  position: fixed;
+  bottom: 32px; left: 32px;
+  z-index: 800;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: #25D366;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.whatsapp-float svg { width: 26px; height: 26px; fill: currentColor; }
+
+.whatsapp-float:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-float__tip {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border-radius: 2px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.whatsapp-float:hover .whatsapp-float__tip,
+.whatsapp-float:focus-visible .whatsapp-float__tip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (max-width: 768px) {
+  .whatsapp-float { bottom: 90px; left: 16px; width: 48px; height: 48px; }
+  .whatsapp-float svg { width: 24px; height: 24px; }
+  .whatsapp-float__tip { display: none; }
+}
+
+/* ─── Google Maps embed (dark-styled, colourises on hover) ───────────────── */
+.map-embed {
+  position: relative;
+  height: 220px;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.map-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  filter: grayscale(1) invert(0.92) contrast(0.85) brightness(0.9);
+  transition: filter 0.45s ease;
+}
+
+.map-embed:hover iframe,
+.map-embed:focus-within iframe { filter: none; }
+
+.map-directions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  transition: color var(--transition), gap var(--transition);
+}
+.map-directions:hover { color: #ff1a1a; gap: 10px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
    PRINT
    ═══════════════════════════════════════════════════════════════════════════ */
 @media print {
   .preloader, .scroll-progress, .nav__burger, .back-to-top,
-  .mobile-cta, .hero__scroll, .marquee-strip,
+  .mobile-cta, .hero__scroll, .marquee-strip, .whatsapp-float,
   .cursor-dot, .cursor-ring { display: none !important; }
   .nav { position: relative; }
   .hero { min-height: auto; }

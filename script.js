@@ -72,9 +72,6 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     }, 350);
 
   }, slideUpDelay);
-
-  // Cleanup
-  if (fillStart) clearTimeout(fillStart);
 })();
 
 
@@ -222,9 +219,14 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   /* ── Filters ──────────────────────────────────────────────────────────── */
   filterBtns.forEach(btn => {
+    btn.setAttribute('aria-pressed', String(btn.classList.contains('active')));
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+      filterBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
 
       const filter = btn.dataset.filter;
       let delay = 0;
@@ -263,6 +265,7 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   let gallery = [];
   let galleryMeta = {};
   let currentIndex = 0;
+  let lastFocused = null;
 
   function buildGallery(item) {
     const raw = item.dataset.images;
@@ -303,16 +306,19 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   }
 
   function openLightbox(item) {
+    lastFocused = document.activeElement;
     buildGallery(item);
     currentIndex = 0;
     loadImage(0);
     lightbox.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => requestAnimationFrame(() => lightbox.classList.add('active')));
+    lightboxClose.focus();
   }
 
   function closeLightbox() {
     lightbox.classList.remove('active');
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
     lightbox.addEventListener('transitionend', () => {
       lightbox.setAttribute('hidden', '');
       document.body.style.overflow = '';
@@ -661,7 +667,8 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body:    new URLSearchParams(new FormData(form)).toString(),
     })
-      .then(() => {
+      .then((res) => {
+        if (!res.ok) throw new Error('Form submission failed: ' + res.status);
         submitBtn.style.display = 'none';
         successMsg.removeAttribute('hidden');
         form.reset();
@@ -675,9 +682,10 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
         }, 8000);
       })
       .catch(() => {
-        submitBtn.innerHTML     = submitOriginalHTML;
+        submitBtn.textContent   = 'Something went wrong — please try again';
         submitBtn.disabled      = false;
         submitBtn.style.opacity = '';
+        setTimeout(() => { submitBtn.innerHTML = submitOriginalHTML; }, 4000);
       });
   });
 })();
@@ -995,106 +1003,4 @@ const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
   }, { threshold: 0.15 });
 
   observer.observe(strip);
-})();
-
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   14. CUSTOM CURSOR
-   ═══════════════════════════════════════════════════════════════════════════ */
-(function initCustomCursor() {
-  // Skip on touch/coarse pointer devices
-  if (window.matchMedia('(pointer: coarse)').matches) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const dot  = qs('#cursorDot');
-  const ring = qs('#cursorRing');
-  if (!dot || !ring) return;
-
-  // Activate custom cursor on the page
-  document.body.classList.add('has-custom-cursor');
-
-  let mouseX = -100, mouseY = -100;
-  let ringX  = -100, ringY  = -100;
-  let rafId  = null;
-
-  // Elements that trigger the hover state
-  const hoverSelector = 'a, button, [role="button"], .filter-btn, .portfolio-item, .service-card, .back-to-top, .nav__cta, label, select, .testimonials__arrow, .lightbox__arrow, .lightbox__close';
-  // Elements that trigger the text state
-  const textSelector  = 'p, h1, h2, h3, h4, li, blockquote, span:not(.marquee-sep):not(.hero__badge-dot), .section-label, .section-sub';
-
-  function setDotPosition(x, y) {
-    dot.style.left = x + 'px';
-    dot.style.top  = y + 'px';
-  }
-
-  function animateRing() {
-    // Ring lags behind — lerp toward mouse
-    ringX += (mouseX - ringX) * 0.14;
-    ringY += (mouseY - ringY) * 0.14;
-
-    ring.style.left = ringX + 'px';
-    ring.style.top  = ringY + 'px';
-
-    rafId = requestAnimationFrame(animateRing);
-  }
-
-  // On first mouse move, show cursors and start loop
-  let started = false;
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-
-    setDotPosition(mouseX, mouseY);
-
-    if (!started) {
-      started = true;
-      dot.classList.add('visible');
-      ring.classList.add('visible');
-      ringX = mouseX;
-      ringY = mouseY;
-      animateRing();
-    }
-  }, { passive: true });
-
-  // Hide when leaving window
-  document.addEventListener('mouseleave', () => {
-    dot.classList.remove('visible');
-    ring.classList.remove('visible');
-  });
-  document.addEventListener('mouseenter', () => {
-    if (started) {
-      dot.classList.add('visible');
-      ring.classList.add('visible');
-    }
-  });
-
-  // Hover state
-  document.addEventListener('mouseover', (e) => {
-    const target = e.target.closest(hoverSelector);
-    if (target) {
-      document.body.classList.add('cursor-hover');
-      document.body.classList.remove('cursor-text');
-    } else {
-      document.body.classList.remove('cursor-hover');
-    }
-  }, { passive: true });
-
-  // Text state
-  document.addEventListener('mouseover', (e) => {
-    if (document.body.classList.contains('cursor-hover')) return;
-    const target = e.target.closest(textSelector);
-    if (target) {
-      document.body.classList.add('cursor-text');
-    } else {
-      document.body.classList.remove('cursor-text');
-    }
-  }, { passive: true });
-
-  // Click state
-  document.addEventListener('mousedown', () => {
-    document.body.classList.add('cursor-click');
-  });
-  document.addEventListener('mouseup', () => {
-    document.body.classList.remove('cursor-click');
-  });
 })();
