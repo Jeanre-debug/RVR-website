@@ -499,8 +499,18 @@ blockquote::before, blockquote::after { content: none; }
   font-size: clamp(1rem, 2vw, 1.25rem);
   font-weight: 400;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 48px;
+  margin-bottom: 10px;
   letter-spacing: 0.02em;
+}
+
+.hero__location {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 40px;
 }
 
 /* Floating stats bar at bottom of hero */
@@ -951,11 +961,12 @@ blockquote::before, blockquote::after { content: none; }
 .portfolio-item--wide { grid-column: span 2; }
 
 .portfolio-item__img {
+  display: block;
   width: 100%;
   height: 100%;
   position: relative;
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
+  object-position: center;
   filter: grayscale(35%) brightness(0.88);
   transition: transform 0.6s var(--ease),
               filter 0.55s var(--ease-out);
@@ -1493,6 +1504,55 @@ blockquote::before, blockquote::after { content: none; }
 
 .testimonials__dot:hover:not(.active)::before {
   background: var(--grey-dark);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FAQ
+   ═══════════════════════════════════════════════════════════════════════════ */
+.faq__list {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: var(--white);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 3px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 22px 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {
+  content: '+';
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--red);
+  transition: transform var(--transition);
+}
+
+.faq-item[open] summary::after { transform: rotate(45deg); }
+
+.faq-item p {
+  padding: 0 26px 22px;
+  color: var(--text-mid);
+  line-height: 1.75;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
