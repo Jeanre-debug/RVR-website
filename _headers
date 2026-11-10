@@ -3,6 +3,8 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
 
 /images/*
   Cache-Control: public, max-age=2592000
@@ -12,3 +14,12 @@
 
 /apple-touch-icon.png
   Cache-Control: public, max-age=604800
+
+/styles.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/script.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/coming-soon.html
+  X-Robots-Tag: noindex
